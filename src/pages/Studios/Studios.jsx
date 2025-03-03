@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import 'react-datepicker/dist/react-datepicker.css';
 import GooglePlacesAutocomplete from 'react-google-autocomplete';
 import toast from 'react-hot-toast';
+import { debounce } from 'lodash'; // Import debounce from lodash
 
 const Studios = () => {
   const [studios, setStudios] = useState([]);
@@ -31,7 +32,7 @@ const Studios = () => {
       })
       .then((data) => {
         setStudios(data);
-        setFilteredStudios(data); 
+        setFilteredStudios(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -46,34 +47,44 @@ const Studios = () => {
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
           setCurrentLocation({ lat: userLat, lng: userLng });
-          filterStudiosByRadius(userLat, userLng, radius); 
+          filterStudiosByRadius(userLat, userLng, radius);
         },
         (error) => {
-        //   console.error('Error getting location:', error);
           toast.error('Error getting location:', error);
         }
       );
     } else {
-    //   console.error('Geolocation is not supported by this browser.');
-      toast.error('Geolocation is not supported by this browser.')
+      toast.error('Geolocation is not supported by this browser.');
     }
   }, []);
 
-  // do Handle place selection here
+  // Debounced search function
+  const debouncedSearch = debounce((value) => {
+    filterStudiosByAddress(value);
+  }, 300);
+
+  // Handle search input change
+  const handleSearchChange = (value) => {
+    setLocationSearch(value);
+    debouncedSearch(value);
+  };
+
+  // Handle place selection
   const handlePlaceSelect = (place) => {
     setLocationSearch(place.formatted_address);
     filterStudiosByAddress(place.formatted_address);
   };
 
-  // do Filter studios by address
+  // Filter studios by address (city/area)
   const filterStudiosByAddress = (address) => {
     const filtered = studios.filter((studio) =>
-      studio.Location.Address.toLowerCase().includes(address.toLowerCase())
+      studio.Location.City.toLowerCase().includes(address.toLowerCase()) || 
+      studio.Location.Area.toLowerCase().includes(address.toLowerCase()) 
     );
     setFilteredStudios(filtered);
   };
 
-  // do Filter studios by radius
+  // Filter studios by radius
   const filterStudiosByRadius = (lat, lng, radius) => {
     const filtered = studios.filter((studio) => {
       const distance = getDistance(
@@ -102,7 +113,7 @@ const Studios = () => {
     return R * c; 
   };
 
-  // do Handle radius change here
+  // Handle radius change
   const handleRadiusChange = (newRadius) => {
     setRadius(newRadius);
     if (currentLocation) {
@@ -124,14 +135,14 @@ const Studios = () => {
   // Handle booking
   const handleBooking = () => {
     if (!startDate || !startTime || !userInfo.name || !userInfo.email) {
-      toast.error('Please fill out all fields before booking.')
+      toast.error('Please fill out all fields before booking.');
       return;
     }
 
     const availability = selectedStudio?.Availability;
     const bookingData = {
       userInfo,
-      startDate: startDate.toISOString(), 
+      startDate: startDate.toISOString(),
       startTime,
       studio: selectedStudio,
     };
@@ -150,25 +161,27 @@ const Studios = () => {
       );
 
       if (isSlotBooked) {
-        toast.error('The selected time slot is not available. Please choose another time.')
+        toast.error('The selected time slot is not available. Please choose another time.');
       } else {
-        // Do Add the new booking to the list
+        // Add the new booking to the list
         currentBookings.push(bookingData);
 
-        // Do Save the updated bookings to localStorage
+        // Save the updated bookings to localStorage
         localStorage.setItem('bookingDetails', JSON.stringify(currentBookings));
-        toast.success('Booking successful!')
+        toast.success('Booking successful!');
         closeModal();
       }
     } else {
-      toast.error('Selected time slot is unavailable. Please choose another time.')
+      toast.error('Selected time slot is unavailable. Please choose another time.');
     }
   };
 
   if (isLoading) {
-    return <div className='w-full h-full flex justify-center items-center'>
-        <span className='text-xl font-semibold text-teal-950'>Loading....</span>
-        </div>;
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <span className="text-xl font-semibold text-teal-950">Loading....</span>
+      </div>
+    );
   }
 
   if (error) {
@@ -176,14 +189,15 @@ const Studios = () => {
   }
 
   return (
-    <div className="bg-gray-100  py-10 mt-14 lg:mt-16">
+    <div className="bg-gray-100 py-10 mt-14 lg:mt-16">
       <h1 className="text-4xl text-center text-teal-950 font-semibold mb-8">Studio List</h1>
 
       {/* Search Bar for Place */}
       <div className="flex justify-center mb-4">
         <GooglePlacesAutocomplete
-          apiKey={import.meta.env.VITE_googleApiKey} 
+          apiKey={import.meta.env.VITE_googleApiKey}
           onSelect={handlePlaceSelect}
+          onChange={(e) => handleSearchChange(e.target.value)} // Add this line
           debounce={500}
           placeholder="Search by location"
           options={{
@@ -211,13 +225,12 @@ const Studios = () => {
       </div>
 
       {/* Studio List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-5  container mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-5 container mx-auto">
         {filteredStudios.map((studio) => (
           <div
             key={studio.Id}
             className="bg-white p-6 rounded-lg shadow-lg transition-all hover:shadow-2xl flex flex-col"
           >
-            
             <h2 className="text-2xl font-semibold text-teal-950 mb-2">{studio.Name}</h2>
             <p className="text-gray-600 mb-2">Type: {studio.Type}</p>
             <p className="text-gray-600 text-sm">Location: {studio.Location.Address}</p>
@@ -241,7 +254,7 @@ const Studios = () => {
                 <p>{studio.Rating}</p>
               </div>
             </div>
-            {/* book now button */}
+            {/* Book Now Button */}
             <div className="mt-auto">
               <button
                 className="w-full bg-teal-950 text-white py-2 rounded-lg hover:bg-teal-900 font-semibold transition-all"
