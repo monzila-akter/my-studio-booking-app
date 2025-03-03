@@ -1,3 +1,43 @@
+# Studio Booking Application
+
+## Overview
+ The Studio Booking Application is a frontend project designed to allow users to search for studios, check their availability, and book them using a mock API with JSON data. The application includes features such as studio listing, searching by location and radius, availability validation, and a booking list.
+
+## Features
+- Studio Listing Page: Displays available studios with relevant details.
+
+- Search Functionality: Users can search for studios by location and radius.
+
+- Availability Checking: Ensures studios are available before booking.
+
+- Booking System: Users can book studios and manage their reservations.
+
+- Mock API Integration: Uses JSON data to simulate backend operations.
+
+- Responsive Design: Optimized for both desktop and mobile devices.
+
+## Tech Stack
+- Frontend: React, Vite, Tailwind CSS, Daisy Ui
+
+- Mock API: JSON data
+
+- Deployment: Vercel
+
+## Techonologies Used
+
+- react google autocompleted
+
+- react hot toast
+
+- lucide react
+
+- framer motion
+
+# Live URL: https://my-studio-booking-app.vercel.app/
+
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
