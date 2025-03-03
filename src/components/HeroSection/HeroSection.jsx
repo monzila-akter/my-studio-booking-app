@@ -13,19 +13,19 @@ const slides = [
     id: 2,
     title: "Photography & Film Studios",
     subtitle: "Premium spaces equipped for photography and filmmaking.",
-    image: "https://source.unsplash.com/1600x700/?studio,photography",
+    image: "https://i.ibb.co.com/kVWpgbNw/STUDIO-18-01-23-62744-1.jpg",
   },
   {
     id: 3,
     title: "Top Rated Recording Studios",
     subtitle: "Record your next masterpiece in top-tier facilities.",
-    image: "https://source.unsplash.com/1600x700/?recording,studio",
+    image: "https://i.ibb.co.com/PsP7HqDr/Screen-Shot-2025-01-21-at-1-43-41-PM.webp",
   },
 ];
 
 const HeroSection = () => {
   return (
-    <section className="relative w-full">
+    <section className="relative w-full mt-14 lg:mt-16">
       <Carousel
         showArrows={false}
         autoPlay

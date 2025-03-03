@@ -30,14 +30,14 @@ const Contact = () => {
   };
 
   return (
-    <div className="bg-gray-100 py-10">
+    <div className="bg-gray-100 py-16 px-5 mt-14 lg:mt-16">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         className="max-w-3xl mx-auto p-6 bg-white shadow-xl rounded-lg"
       >
-        <h1 className="text-4xl font-semibold text-center text-gray-800 mb-6">Contact Us</h1>
+        <h1 className="text-4xl font-semibold text-center text-teal-950 mb-6">Contact Us</h1>
 
         <motion.form
           initial={{ opacity: 0, y: 50 }}
@@ -80,7 +80,7 @@ const Contact = () => {
               onChange={handleChange}
               required
               rows="4"
-              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-950"
               placeholder="Enter your message"
             />
           </div>
@@ -89,7 +89,7 @@ const Contact = () => {
             type="submit"
             disabled={isSubmitting}
             className={`w-full py-3 text-white font-semibold rounded-lg transition-colors ${
-              isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
+              isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-teal-950 hover:bg-teal-900'
             }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}

@@ -3,28 +3,28 @@ import React, { useEffect, useState } from 'react';
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
 
-  // Fetch bookings from localStorage when the component mounts
+  // Fetch bookings from localStorage 
   useEffect(() => {
     const storedBookings = JSON.parse(localStorage.getItem('bookingDetails')) || [];
     setBookings(storedBookings);
   }, []);
 
   return (
-    <div className="bg-gray-100 py-10">
-      <h1 className="text-4xl text-center text-gray-900 font-semibold mb-8">Booking List</h1>
+    <div className=" py-10 mt-14 lg:mt-16  ">
+      <h1 className="text-4xl text-center text-teal-950 font-semibold mb-8">Booking List</h1>
       
       {bookings.length === 0 ? (
-        <div className="text-center text-gray-600">No bookings found.</div>
+        <div className="text-center text-lg font-medium text-gray-600">No bookings found.</div>
       ) : (
-        <div className="overflow-x-auto mx-auto max-w-6xl px-4">
-          <table className="min-w-full bg-white shadow-lg rounded-lg">
-            <thead>
+        <div className="overflow-x-auto  mx-auto max-w-6xl px-4">
+          <table className="min-w-full  bg-white border-2  shadow-lg ">
+            <thead className='bg-teal-950 '>
               <tr className="border-b">
-                <th className="px-6 py-3 text-left text-gray-700">User Name</th>
-                <th className="px-6 py-3 text-left text-gray-700">Email</th>
-                <th className="px-6 py-3 text-left text-gray-700">Studio Type</th>
-                <th className="px-6 py-3 text-left text-gray-700">Location</th>
-                <th className="px-6 py-3 text-left text-gray-700">Time & Date</th>
+                <th className="px-6 py-3 text-left text-white">User Name</th>
+                <th className="px-6 py-3 text-left text-white">Email</th>
+                <th className="px-6 py-3 text-left text-white">Studio Type</th>
+                <th className="px-6 py-3 text-left text-white">Location</th>
+                <th className="px-6 py-3 text-left text-white">Time & Date</th>
               </tr>
             </thead>
             <tbody>
