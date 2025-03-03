@@ -33,7 +33,7 @@
 
 - framer motion
 
-# Live URL: https://my-studio-booking-app.vercel.app/
+## Live URL: https://my-studio-booking-app.vercel.app/
 
 
 
